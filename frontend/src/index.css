@@ -1,0 +1,814 @@
+/* ==========================================================================
+   Smart Expenses — Royal Sapphire & Porcelain Fintech Design System (index.css)
+   ========================================================================== */
+
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Royal Sapphire & Deep Cobalt Palette */
+  --bg-royal-dark: #081630;
+  --bg-royal-mid: #0d2552;
+  --bg-royal-light: #163d7d;
+  --bg-royal-accent: #2563eb;
+  
+  /* Porcelain & Light Sheet Palette */
+  --bg-sheet: #ffffff;
+  --bg-sheet-subtle: #f8fafc;
+  --bg-sheet-card: #ffffff;
+  --border-sheet: rgba(226, 232, 240, 0.8);
+  
+  /* Glassmorphism on Royal Blue */
+  --glass-royal: rgba(255, 255, 255, 0.08);
+  --glass-royal-hover: rgba(255, 255, 255, 0.14);
+  --border-royal: rgba(255, 255, 255, 0.15);
+  --border-royal-glow: rgba(56, 189, 248, 0.4);
+  
+  /* Text */
+  --text-white: #ffffff;
+  --text-royal-muted: #93c5fd;
+  --text-royal-subtle: #60a5fa;
+  --text-dark: #0f172a;
+  --text-dark-muted: #475569;
+  --text-dark-subtle: #94a3b8;
+  
+  /* Accents & Status */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-glow: rgba(37, 99, 235, 0.35);
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --accent-amber: #f59e0b;
+
+  /* Radius & Shadows */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-sheet: 32px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 30px -5px rgba(10, 25, 55, 0.15), 0 4px 10px -2px rgba(10, 25, 55, 0.08);
+  --shadow-sheet: 0 -10px 40px rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 15px 35px -5px rgba(8, 22, 48, 0.35);
+  
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-royal-dark);
+  background-image: 
+    radial-gradient(circle at 50% 0%, #173d7b 0%, #0d2552 45%, #081630 100%);
+  background-attachment: fixed;
+  color: var(--text-white);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Sapphire Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(8, 22, 48, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* App Shell Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Containers */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ==========================================================================
+   Dual-Tone Sheet & Cards Architecture
+   ========================================================================== */
+
+/* Sapphire Glass Card (Used on royal blue sections) */
+.card-sapphire, .card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-royal);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
+  color: #fff;
+}
+
+.card-sapphire:hover, .card:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 20px 45px -5px rgba(0, 0, 0, 0.45), 0 0 25px rgba(37, 99, 235, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Porcelain Lower Sheet (Matching the white sheet in the reference image) */
+.sheet-porcelain {
+  background: var(--bg-sheet);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  box-shadow: var(--shadow-sheet);
+  padding: 2rem 2.25rem 2.5rem;
+  color: var(--text-dark);
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.card-white {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.card-white:hover {
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Realistic Stacked Payment Cards (Screen 1 Visual)
+   ========================================================================== */
+.smart-payment-card {
+  width: 100%;
+  max-width: 380px;
+  height: 215px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(46, 115, 222, 0.85) 0%, rgba(20, 68, 148, 0.9) 60%, rgba(9, 36, 88, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 20px 50px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.smart-payment-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+  pointer-events: none;
+}
+
+.card-chip {
+  width: 38px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #ffd700, #e6b800);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+.card-number-dots {
+  font-family: 'Courier New', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.card-footer-info {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+/* ==========================================================================
+   Luxury Matte Black Card (Screen 2 Center Visual)
+   ========================================================================== */
+.luxury-black-card {
+  width: 100%;
+  max-width: 340px;
+  height: 200px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #181c24 0%, #0d1017 60%, #080a0f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 99, 235, 0.2);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.luxury-card-geometric-badge {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.25rem;
+  width: 44px;
+  height: 44px;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   3D Frosted Glass Category Bubbles (Screen 3 Visual)
+   ========================================================================== */
+.bubble-chart-stage {
+  width: 100%;
+  max-width: 580px;
+  height: 380px;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-sphere-bubble {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(13, 38, 85, 0.6) 80%, rgba(8, 22, 50, 0.85) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 15px 35px -5px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset -4px -6px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.glass-sphere-bubble:hover {
+  transform: scale(1.08) translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 
+    0 22px 50px -5px rgba(0, 0, 0, 0.65),
+    0 0 35px rgba(56, 189, 248, 0.5),
+    inset 0 2px 6px rgba(255, 255, 255, 0.7);
+  z-index: 20;
+}
+
+.bubble-icon {
+  font-size: 1.35rem;
+  margin-bottom: 0.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.bubble-title {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  max-width: 90%;
+  line-height: 1.2;
+}
+
+.bubble-pct {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 0.15rem;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Specific Bubble Sizing & Positioning */
+.bubble-dominant {
+  width: 175px;
+  height: 175px;
+  right: 18%;
+  top: 24%;
+  z-index: 10;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.35);
+}
+
+.bubble-clothes {
+  width: 130px;
+  height: 130px;
+  left: 12%;
+  top: 8%;
+  z-index: 5;
+}
+
+.bubble-cafes {
+  width: 125px;
+  height: 125px;
+  left: 16%;
+  bottom: 8%;
+  z-index: 6;
+}
+
+.bubble-sports {
+  width: 105px;
+  height: 105px;
+  left: 38%;
+  top: 40%;
+  z-index: 7;
+}
+
+.bubble-health {
+  width: 95px;
+  height: 95px;
+  right: 10%;
+  top: 6%;
+  z-index: 4;
+}
+
+.bubble-travel {
+  width: 90px;
+  height: 90px;
+  right: 8%;
+  bottom: 12%;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   Fintech Buttons, Badges, & Action Pills
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #ffffff;
+  color: var(--text-dark);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn-cobalt {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-cobalt:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Action Pills (Deposit ↗, Transfer ⇄, Withdraw ↘) */
+.pill-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-full);
+  background: #f1f5f9;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: var(--text-dark);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pill-action-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+  border-color: #cbd5e1;
+}
+
+/* Floating Navigation Dock (Screen 1 Bottom) */
+.floating-dock-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #0f172a;
+  border-radius: var(--radius-full);
+  padding: 0.5rem 0.75rem;
+  max-width: 280px;
+  margin: 1.5rem auto 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dock-item-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 1.15rem;
+  transition: all 0.2s ease;
+}
+
+.dock-item-btn:hover {
+  color: #fff;
+}
+
+.dock-item-btn.active {
+  background: #1e293b;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Delta Pill (↗ 2.45% this month) */
+.delta-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+/* Form Inputs */
+.form-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark-muted);
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.8rem 1.1rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  background: #ffffff;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-success { background: #dcfce7; color: #15803d; }
+.badge-warning { background: #fef3c7; color: #b45309; }
+.badge-danger { background: #fee2e2; color: #b91c1c; }
+.badge-info { background: #e0f2fe; color: #0369a1; }
+.badge-primary { background: rgba(37, 99, 235, 0.15); color: #2563eb; }
+
+/* Grid Utilities */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+
+@media (max-width: 1024px) {
+  .grid-5, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .bubble-chart-stage { height: 320px; }
+  .sheet-porcelain { padding: 1.5rem 1rem; border-radius: 24px 24px 0 0; }
+}
+
+/* Stat Cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: var(--transition);
+  color: #fff;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-royal-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.stat-footer {
+  font-size: 0.8rem;
+  color: var(--text-royal-subtle);
+}
+
+/* Table Styling */
+.table-container {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.data-table th {
+  background: #f8fafc;
+  padding: 0.95rem 1.15rem;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+}
+
+.data-table td {
+  padding: 0.95rem 1.15rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-dark);
+}
+
+.data-table tr:hover td {
+  background: #f8fafc;
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 9px;
+  background: #e2e8f0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+/* Alerts */
+.alert-box {
+  padding: 1.1rem 1.35rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+.alert-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* ==========================================================================
+   Card Management & Add Card Modal System
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 12, 28, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+  animation: modalFadeIn 0.25s ease-out forwards;
+}
+
+.modal-window {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  max-width: 680px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Card Themes */
+.card-theme-sapphire {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(20, 68, 148, 0.95) 60%, rgba(9, 36, 88, 0.98) 100%) !important;
+}
+
+.card-theme-black {
+  background: linear-gradient(145deg, #1f242d 0%, #11141a 60%, #090a0d 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.card-theme-emerald {
+  background: linear-gradient(135deg, #059669 0%, #047857 55%, #064e3b 100%) !important;
+}
+
+.card-theme-violet {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 55%, #4c1d95 100%) !important;
+}
+
+.card-theme-sunset {
+  background: linear-gradient(135deg, #f97316 0%, #c2410c 55%, #7c2d12 100%) !important;
+}
+
+/* Live interactive card preview */
+.live-card-preview {
+  width: 100%;
+  max-width: 380px;
+  height: 220px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  padding: 1.45rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  transition: all 0.35s ease;
+}
+
+.live-card-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 250%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
+  pointer-events: none;
+  animation: cardShimmerPass 4s infinite ease-in-out;
+}
+
+@keyframes cardShimmerPass {
+  0% { transform: translateX(0); }
+  60%, 100% { transform: translateX(60%); }
+}
+
+.theme-color-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-color-pill.active {
+  border-color: #2563eb;
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+}
+
