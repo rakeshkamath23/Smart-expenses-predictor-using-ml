@@ -572,8 +572,37 @@ def generate_monthly_prediction(user_id, target_month=10):
 
                 <div ref={chatBottomRef} />
 
-                {/* Docked bottom input */}
+                {/* Docked bottom input with Quick Prompt Suggestions */}
                 <div className="chat-docked-input">
+                  {/* Quick follow-up starter chips */}
+                  <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.4rem' }}>
+                    {[
+                      '📊 Forecast October categories',
+                      '⚠️ Detect high-value spikes',
+                      '💡 3 ways to save 15%',
+                      '📈 How are my investments performing?'
+                    ].map((chip, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSendMessage(chip.slice(2).trim())}
+                        style={{
+                          whiteSpace: 'nowrap',
+                          padding: '0.3rem 0.75rem',
+                          borderRadius: '9999px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          color: '#bfdbfe',
+                          fontSize: '0.76rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="chat-input-wrapper">
                     <textarea
                       rows="1"

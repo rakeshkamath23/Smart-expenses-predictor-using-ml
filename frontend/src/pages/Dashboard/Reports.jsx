@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
+import { getStoredTransactions } from '../../utils/transactionStore';
 
 export default function Reports() {
   const [downloading, setDownloading] = useState(false);
+  const transactions = getStoredTransactions();
 
   const handleExportCSV = () => {
     setDownloading(true);
     setTimeout(() => {
-      // Simulate CSV file download
-      const csvData = "ID,Date,Category,Amount,Payment Method,Description\n1,2026-09-22,Food,350.00,UPI,Lunch\n2,2026-09-21,Travel,120.00,Card,Metro\n";
-      const blob = new Blob([csvData], { type: 'text/csv' });
+      const headers = "ID,Date,Merchant,Category,Amount,Type,Payment Method,Notes\n";
+      const rows = transactions.map(t => 
+        `"${t.id}","${t.date || ''}","${(t.merchant || t.name || '').replace(/"/g, '""')}","${t.category || ''}","${Math.abs(t.amount || 0)}","${t.isIncome ? 'Income' : 'Expense'}","${t.method || ''}","${(t.notes || '').replace(/"/g, '""')}"`
+      ).join("\n");
+      const csvData = headers + rows;
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
       a.setAttribute('download', `smart_expenses_report_${new Date().toISOString().split('T')[0]}.csv`);
       a.click();
       setDownloading(false);
-    }, 600);
+    }, 500);
   };
 
   return (

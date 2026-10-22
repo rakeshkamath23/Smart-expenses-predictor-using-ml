@@ -10,6 +10,7 @@ export default function Register() {
     confirmPassword: '',
   });
   const [statusMessage, setStatusMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -32,25 +33,26 @@ export default function Register() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '4rem 1.5rem',
+      padding: '2.5rem 1rem',
       minHeight: '75vh'
     }}>
       <div className="sheet-porcelain" style={{ maxWidth: '480px', width: '100%', padding: '2.5rem 2rem', borderRadius: '28px' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
-            width: '46px',
-            height: '46px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #38bdf8, #2563eb)',
+            width: '52px',
+            height: '52px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '1.5rem',
-            margin: '0 auto 1rem',
-            color: '#fff',
-            boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)'
+            margin: '0 auto 1.25rem',
+            color: '#ffffff',
+            boxShadow: '0 10px 25px -4px rgba(37, 99, 235, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4)'
           }}>
-            ⚡
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#ffffff" stroke="#ffffff" />
+            </svg>
           </div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.35rem', color: 'var(--text-dark)' }}>
             Create Account
@@ -113,7 +115,7 @@ export default function Register() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               className="form-input"
               required
               value={formData.password}
@@ -127,7 +129,7 @@ export default function Register() {
             <input
               id="confirmPassword"
               name="confirmPassword"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               className="form-input"
               required
               value={formData.confirmPassword}

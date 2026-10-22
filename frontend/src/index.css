@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ==========================================================================
    Smart Expenses — Royal Sapphire & Porcelain Fintech Design System (index.css)
    ========================================================================== */
@@ -15,7 +19,7 @@
   --bg-sheet: #ffffff;
   --bg-sheet-subtle: #f8fafc;
   --bg-sheet-card: #ffffff;
-  --border-sheet: rgba(226, 232, 240, 0.8);
+  --border-sheet: rgba(226, 232, 240, 0.85);
   
   /* Glassmorphism on Royal Blue */
   --glass-royal: rgba(255, 255, 255, 0.08);
@@ -59,6 +63,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -72,6 +77,10 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
 }
 
 /* Custom Sapphire Scrollbar */
@@ -125,7 +134,6 @@ button {
    Dual-Tone Sheet & Cards Architecture
    ========================================================================== */
 
-/* Sapphire Glass Card (Used on royal blue sections) */
 .card-sapphire, .card {
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(24px) saturate(180%);
@@ -144,7 +152,7 @@ button {
   transform: translateY(-2px);
 }
 
-/* Porcelain Lower Sheet (Matching the white sheet in the reference image) */
+/* Porcelain Lower Sheet */
 .sheet-porcelain {
   background: var(--bg-sheet);
   border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
@@ -172,12 +180,13 @@ button {
 }
 
 /* ==========================================================================
-   Realistic Stacked Payment Cards (Screen 1 Visual)
+   Realistic Payment Cards
    ========================================================================== */
 .smart-payment-card {
   width: 100%;
   max-width: 380px;
-  height: 215px;
+  min-width: 0;
+  aspect-ratio: 1.586 / 1;
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(46, 115, 222, 0.85) 0%, rgba(20, 68, 148, 0.9) 60%, rgba(9, 36, 88, 0.95) 100%);
   backdrop-filter: blur(20px);
@@ -185,7 +194,7 @@ button {
   box-shadow: 
     0 20px 50px -10px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  padding: 1.5rem;
+  padding: 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -193,6 +202,7 @@ button {
   position: relative;
   overflow: hidden;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .smart-payment-card::before {
@@ -231,13 +241,12 @@ button {
   justify-content: space-between;
 }
 
-/* ==========================================================================
-   Luxury Matte Black Card (Screen 2 Center Visual)
-   ========================================================================== */
+/* Luxury Matte Black Card */
 .luxury-black-card {
   width: 100%;
-  max-width: 340px;
-  height: 200px;
+  max-width: 360px;
+  min-width: 0;
+  aspect-ratio: 1.586 / 1;
   border-radius: 20px;
   background: linear-gradient(145deg, #181c24 0%, #0d1017 60%, #080a0f 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -247,29 +256,207 @@ button {
   flex-direction: column;
   justify-content: space-between;
   color: #fff;
-  position: relative;
-  overflow: hidden;
   margin: 0 auto;
-}
-
-.luxury-card-geometric-badge {
-  position: absolute;
-  right: 1.5rem;
-  bottom: 1.25rem;
-  width: 44px;
-  height: 44px;
-  opacity: 0.7;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
-   3D Frosted Glass Category Bubbles (Screen 3 Visual)
+   Pill Actions & Floating Bottom Navigation Dock
+   ========================================================================== */
+.pill-action-btn {
+  background: #f1f5f9;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pill-action-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
+}
+
+.floating-dock-bar {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: 0.45rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  max-width: 280px;
+  margin: 1.25rem auto 0;
+}
+
+.dock-item-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dock-item-btn:hover, .dock-item-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.5);
+}
+
+.delta-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+}
+
+.btn-primary, .btn-cobalt {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:hover, .btn-cobalt:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid var(--border-royal);
+}
+
+.btn-outline:hover {
+  background: var(--glass-royal-hover);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+.form-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-dark-muted);
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* Alerts */
+.alert-box {
+  padding: 0.85rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+
+.alert-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.alert-success {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+/* ==========================================================================
+   Progress Bars
+   ========================================================================== */
+.progress-track {
+  width: 100%;
+  height: 9px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 4px;
+}
+
+
+/* ==========================================================================
+   Interactive 3D Frosted Glass Category Bubble Stage (Royal Sapphire & Cyan)
    ========================================================================== */
 .bubble-chart-stage {
+  position: relative;
   width: 100%;
   max-width: 580px;
   height: 380px;
-  position: relative;
-  margin: 0 auto;
+  margin: 1.25rem auto 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,28 +470,78 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #fff;
   cursor: pointer;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(13, 38, 85, 0.6) 80%, rgba(8, 22, 50, 0.85) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.45) 0%, rgba(56, 189, 248, 0.35) 45%, rgba(13, 40, 87, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(255, 255, 255, 0.35);
   box-shadow: 
-    0 15px 35px -5px rgba(0, 0, 0, 0.5),
+    0 15px 35px rgba(0, 0, 0, 0.4),
     inset 0 2px 4px rgba(255, 255, 255, 0.5),
-    inset -4px -6px 12px rgba(0, 0, 0, 0.4);
+    inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
 }
 
 .glass-sphere-bubble:hover {
   transform: scale(1.08) translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 
-    0 22px 50px -5px rgba(0, 0, 0, 0.65),
-    0 0 35px rgba(56, 189, 248, 0.5),
+    0 20px 45px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(56, 189, 248, 0.6),
     inset 0 2px 6px rgba(255, 255, 255, 0.7);
-  z-index: 20;
+  z-index: 20 !important;
+}
+
+.bubble-dominant {
+  width: 175px;
+  height: 175px;
+  right: 12%;
+  top: 22%;
+  z-index: 10;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.35);
+}
+
+.bubble-clothes {
+  width: 130px;
+  height: 130px;
+  left: 8%;
+  top: 8%;
+  z-index: 5;
+}
+
+.bubble-cafes {
+  width: 125px;
+  height: 125px;
+  left: 12%;
+  bottom: 8%;
+  z-index: 6;
+}
+
+.bubble-sports {
+  width: 108px;
+  height: 108px;
+  left: 36%;
+  top: 36%;
+  z-index: 7;
+}
+
+.bubble-health {
+  width: 95px;
+  height: 95px;
+  right: 6%;
+  top: 6%;
+  z-index: 4;
+}
+
+.bubble-travel {
+  width: 92px;
+  height: 92px;
+  right: 4%;
+  bottom: 10%;
+  z-index: 3;
 }
 
 .bubble-icon {
@@ -330,397 +567,35 @@ button {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* Specific Bubble Sizing & Positioning */
-.bubble-dominant {
-  width: 175px;
-  height: 175px;
-  right: 18%;
-  top: 24%;
-  z-index: 10;
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.35);
-}
-
-.bubble-clothes {
-  width: 130px;
-  height: 130px;
-  left: 12%;
-  top: 8%;
-  z-index: 5;
-}
-
-.bubble-cafes {
-  width: 125px;
-  height: 125px;
-  left: 16%;
-  bottom: 8%;
-  z-index: 6;
-}
-
-.bubble-sports {
-  width: 105px;
-  height: 105px;
-  left: 38%;
-  top: 40%;
-  z-index: 7;
-}
-
-.bubble-health {
-  width: 95px;
-  height: 95px;
-  right: 10%;
-  top: 6%;
-  z-index: 4;
-}
-
-.bubble-travel {
-  width: 90px;
-  height: 90px;
-  right: 8%;
-  bottom: 12%;
-  z-index: 3;
-}
-
 /* ==========================================================================
-   Fintech Buttons, Badges, & Action Pills
-   ========================================================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.4rem;
-  font-size: 0.92rem;
-  font-weight: 600;
-  border-radius: var(--radius-full);
-  transition: var(--transition);
-  outline: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: #ffffff;
-  color: var(--text-dark);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.btn-primary:hover {
-  background: #f1f5f9;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
-}
-
-.btn-cobalt {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-}
-
-.btn-cobalt:hover {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-/* Action Pills (Deposit ↗, Transfer ⇄, Withdraw ↘) */
-.pill-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-full);
-  background: #f1f5f9;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  color: var(--text-dark);
-  font-size: 0.88rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.pill-action-btn:hover {
-  background: #e2e8f0;
-  transform: translateY(-1px);
-  border-color: #cbd5e1;
-}
-
-/* Floating Navigation Dock (Screen 1 Bottom) */
-.floating-dock-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: #0f172a;
-  border-radius: var(--radius-full);
-  padding: 0.5rem 0.75rem;
-  max-width: 280px;
-  margin: 1.5rem auto 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dock-item-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  font-size: 1.15rem;
-  transition: all 0.2s ease;
-}
-
-.dock-item-btn:hover {
-  color: #fff;
-}
-
-.dock-item-btn.active {
-  background: #1e293b;
-  color: #fff;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
-}
-
-/* Delta Pill (↗ 2.45% this month) */
-.delta-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.85rem;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #e2e8f0;
-  font-size: 0.78rem;
-  font-weight: 600;
-  backdrop-filter: blur(8px);
-}
-
-/* Form Inputs */
-.form-group {
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.form-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-dark-muted);
-}
-
-.form-input, .form-select, .form-textarea {
-  width: 100%;
-  padding: 0.8rem 1.1rem;
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: var(--radius-md);
-  color: var(--text-dark);
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: var(--transition);
-  outline: none;
-}
-
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
-  background: #ffffff;
-}
-
-/* Badges */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.badge-success { background: #dcfce7; color: #15803d; }
-.badge-warning { background: #fef3c7; color: #b45309; }
-.badge-danger { background: #fee2e2; color: #b91c1c; }
-.badge-info { background: #e0f2fe; color: #0369a1; }
-.badge-primary { background: rgba(37, 99, 235, 0.15); color: #2563eb; }
-
-/* Grid Utilities */
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
-
-@media (max-width: 1024px) {
-  .grid-5, .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-3 { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 640px) {
-  .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-  .bubble-chart-stage { height: 320px; }
-  .sheet-porcelain { padding: 1.5rem 1rem; border-radius: 24px 24px 0 0; }
-}
-
-/* Stat Cards */
-.stat-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 20px;
-  padding: 1.35rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: var(--transition);
-  color: #fff;
-}
-
-.stat-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-}
-
-.stat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--text-royal-muted);
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.stat-value {
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.02em;
-}
-
-.stat-footer {
-  font-size: 0.8rem;
-  color: var(--text-royal-subtle);
-}
-
-/* Table Styling */
-.table-container {
-  overflow-x: auto;
-  border-radius: 16px;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  background: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.9rem;
-}
-
-.data-table th {
-  background: #f8fafc;
-  padding: 0.95rem 1.15rem;
-  font-weight: 700;
-  color: #64748b;
-  border-bottom: 1px solid #e2e8f0;
-  text-transform: uppercase;
-  font-size: 0.74rem;
-  letter-spacing: 0.06em;
-}
-
-.data-table td {
-  padding: 0.95rem 1.15rem;
-  border-bottom: 1px solid #f1f5f9;
-  color: var(--text-dark);
-}
-
-.data-table tr:hover td {
-  background: #f8fafc;
-}
-
-/* Progress bar */
-.progress-track {
-  width: 100%;
-  height: 9px;
-  background: #e2e8f0;
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  margin: 0.5rem 0;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
-  border-radius: var(--radius-full);
-  transition: width 0.5s ease;
-}
-
-/* Alerts */
-.alert-box {
-  padding: 1.1rem 1.35rem;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.92rem;
-  margin-bottom: 1.25rem;
-  font-weight: 500;
-}
-
-.alert-info {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1d4ed8;
-}
-
-/* ==========================================================================
-   Card Management & Add Card Modal System
+   Modals & Overlays
    ========================================================================== */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(4, 12, 28, 0.82);
+  background: rgba(3, 7, 18, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99999;
   padding: 1.5rem;
   overflow-y: auto;
-  animation: modalFadeIn 0.25s ease-out forwards;
+  animation: modalFadeIn 0.22s ease-out forwards;
 }
 
 .modal-window {
   background: #ffffff;
+  color: #0f172a;
   border-radius: 28px;
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  max-width: 680px;
   width: 100%;
-  max-height: 92vh;
-  overflow-y: auto;
+  max-width: 520px;
+  box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  margin: auto;
   position: relative;
-  animation: modalSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes modalFadeIn {
@@ -728,87 +603,397 @@ button {
   to { opacity: 1; }
 }
 
-@keyframes modalSlideUp {
+@keyframes modalPop {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.97);
+    transform: scale(0.92) translateY(12px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-/* Card Themes */
-.card-theme-sapphire {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(20, 68, 148, 0.95) 60%, rgba(9, 36, 88, 0.98) 100%) !important;
-}
-
-.card-theme-black {
-  background: linear-gradient(145deg, #1f242d 0%, #11141a 60%, #090a0d 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.card-theme-emerald {
-  background: linear-gradient(135deg, #059669 0%, #047857 55%, #064e3b 100%) !important;
-}
-
-.card-theme-violet {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 55%, #4c1d95 100%) !important;
-}
-
-.card-theme-sunset {
-  background: linear-gradient(135deg, #f97316 0%, #c2410c 55%, #7c2d12 100%) !important;
-}
-
-/* Live interactive card preview */
-.live-card-preview {
-  width: 100%;
-  max-width: 380px;
-  height: 220px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  padding: 1.45rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-  transition: all 0.35s ease;
-}
-
-.live-card-shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 250%;
-  height: 100%;
-  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
-  pointer-events: none;
-  animation: cardShimmerPass 4s infinite ease-in-out;
-}
-
-@keyframes cardShimmerPass {
-  0% { transform: translateX(0); }
-  60%, 100% { transform: translateX(60%); }
-}
-
+/* Theme Color Selection Pills */
 .theme-color-pill {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2.5px solid transparent;
+  border: 3px solid transparent;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.theme-color-pill:hover {
+  transform: scale(1.12);
 }
 
 .theme-color-pill.active {
-  border-color: #2563eb;
-  transform: scale(1.15);
-  box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+  border-color: #0f172a;
+  transform: scale(1.18);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
 }
+
+.card-theme-sapphire {
+  background: linear-gradient(135deg, #1d4ed8, #172554);
+}
+
+.card-theme-black {
+  background: linear-gradient(135deg, #374151, #111827);
+}
+
+.card-theme-emerald {
+  background: linear-gradient(135deg, #10b981, #064e3b);
+}
+
+.card-theme-violet {
+  background: linear-gradient(135deg, #8b5cf6, #3b0764);
+}
+
+.card-theme-sunset {
+  background: linear-gradient(135deg, #f97316, #b91c1c);
+}
+
+/* ==========================================================================
+   Mobile Responsiveness Foundation (320px - 1024px)
+   ========================================================================== */
+
+/* Viewport & Container Safeguards */
+.dashboard-viewport {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Responsive Containers */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Responsive Sheets & Glassmorphic Cards */
+@media (max-width: 768px) {
+  .sheet-porcelain {
+    padding: 1.5rem 1.25rem 2rem;
+    border-radius: 24px 24px 0 0;
+    margin-top: 1rem;
+  }
+  .card-sapphire, .card {
+    padding: 1.25rem;
+    border-radius: 18px;
+  }
+  .card-white {
+    padding: 1.15rem;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sheet-porcelain {
+    padding: 1.25rem 0.9rem 1.75rem;
+    border-radius: 20px 20px 0 0;
+  }
+  .card-sapphire, .card {
+    padding: 1.05rem;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sheet-porcelain {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+  .card-sapphire, .card {
+    padding: 0.9rem;
+  }
+}
+
+/* Responsive Grid Utilities */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Responsive Table Container */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 14px;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 580px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th, .data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.data-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #f8fafc;
+}
+
+.data-table td {
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   Responsive 3D Frosted Glass Category Bubbles
+   ========================================================================== */
+@media (max-width: 640px) {
+  .bubble-chart-stage {
+    height: 320px;
+    max-width: 100%;
+    margin: 0.75rem auto 0.5rem;
+  }
+  .bubble-dominant {
+    width: 135px;
+    height: 135px;
+    right: 8%;
+    top: 20%;
+  }
+  .bubble-clothes {
+    width: 105px;
+    height: 105px;
+    left: 4%;
+    top: 6%;
+  }
+  .bubble-cafes {
+    width: 100px;
+    height: 100px;
+    left: 8%;
+    bottom: 6%;
+  }
+  .bubble-sports {
+    width: 88px;
+    height: 88px;
+    left: 36%;
+    top: 36%;
+  }
+  .bubble-health {
+    width: 80px;
+    height: 80px;
+    right: 4%;
+    top: 4%;
+  }
+  .bubble-travel {
+    width: 78px;
+    height: 78px;
+    right: 2%;
+    bottom: 8%;
+  }
+  .bubble-icon {
+    font-size: 1.15rem;
+    margin-bottom: 0.1rem;
+  }
+  .bubble-title {
+    font-size: 0.68rem;
+  }
+  .bubble-pct {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .bubble-chart-stage {
+    height: 290px;
+  }
+  .bubble-dominant {
+    width: 116px;
+    height: 116px;
+    right: 5%;
+    top: 18%;
+  }
+  .bubble-clothes {
+    width: 90px;
+    height: 90px;
+    left: 3%;
+    top: 4%;
+  }
+  .bubble-cafes {
+    width: 86px;
+    height: 86px;
+    left: 5%;
+    bottom: 4%;
+  }
+  .bubble-sports {
+    width: 76px;
+    height: 76px;
+    left: 34%;
+    top: 35%;
+  }
+  .bubble-health {
+    width: 70px;
+    height: 70px;
+    right: 3%;
+    top: 2%;
+  }
+  .bubble-travel {
+    width: 68px;
+    height: 68px;
+    right: 1%;
+    bottom: 6%;
+  }
+  .bubble-icon {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+  .bubble-title {
+    font-size: 0.6rem;
+    line-height: 1.1;
+  }
+  .bubble-pct {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 330px) {
+  .bubble-chart-stage {
+    height: 260px;
+  }
+  .bubble-dominant {
+    width: 104px;
+    height: 104px;
+    right: 2%;
+    top: 18%;
+  }
+  .bubble-clothes {
+    width: 82px;
+    height: 82px;
+    left: 2%;
+    top: 3%;
+  }
+  .bubble-cafes {
+    width: 78px;
+    height: 78px;
+    left: 3%;
+    bottom: 3%;
+  }
+  .bubble-sports {
+    width: 68px;
+    height: 68px;
+    left: 32%;
+    top: 34%;
+  }
+  .bubble-health {
+    width: 64px;
+    height: 64px;
+    right: 2%;
+    top: 2%;
+  }
+  .bubble-travel {
+    width: 62px;
+    height: 62px;
+    right: 1%;
+    bottom: 4%;
+  }
+}
+
+/* Responsive Payment Cards */
+@media (max-width: 420px) {
+  .smart-payment-card, .luxury-black-card {
+    max-width: 100%;
+    padding: 1.1rem;
+    border-radius: 18px;
+  }
+  .card-number-dots {
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 340px) {
+  .smart-payment-card, .luxury-black-card {
+    padding: 0.85rem 0.95rem;
+    border-radius: 16px;
+  }
+  .card-number-dots {
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Responsive Floating Dock */
+@media (max-width: 480px) {
+  .floating-dock-bar {
+    max-width: 250px;
+    padding: 0.35rem 0.5rem;
+    gap: 0.35rem;
+  }
+  .dock-item-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Modal Responsive Fitting */
+@media (max-width: 640px) {
+  .modal-backdrop {
+    padding: 1rem;
+  }
+  .modal-window {
+    border-radius: 22px;
+    max-width: 100%;
+  }
+}
+
+/* Universal Mobile Optimizations (iOS Safari, Android Chrome, Samsung Internet) */
+@media (max-width: 768px) {
+  /* Prevent iOS Safari from automatically zooming into inputs when focused */
+  input, select, textarea, .form-input, .form-select {
+    font-size: 16px !important;
+  }
+
+  /* Ergonomic touch targets for buttons and interactive controls */
+  .mobile-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Safe area support for bezel-less screens (iPhone Dynamic Island, Home Bar, Android Navigation Bar) */
+@supports (padding: max(0px)) {
+  nav {
+    padding-top: env(safe-area-inset-top);
+  }
+  .dashboard-viewport {
+    padding-bottom: max(2.5rem, env(safe-area-inset-bottom)) !important;
+    padding-left: max(0.65rem, env(safe-area-inset-left)) !important;
+    padding-right: max(0.65rem, env(safe-area-inset-right)) !important;
+  }
+}
+
 

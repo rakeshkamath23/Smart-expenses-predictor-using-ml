@@ -58,63 +58,45 @@ export default function Sidebar() {
             transition: 'var(--transition)'
           })}
         >
-          <span style={{ fontSize: '1.05rem' }}>{item.icon}</span>
+          <span style={{ fontSize: '1.05rem', width: '22px', textAlign: 'center' }}>{item.icon}</span>
           <span>{item.label}</span>
+          {item.isSpecial && (
+            <span style={{
+              marginLeft: 'auto',
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              padding: '0.15rem 0.45rem',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(56, 189, 248, 0.25)',
+              color: '#38bdf8',
+              border: '1px solid rgba(56, 189, 248, 0.4)'
+            }}>
+              3D
+            </span>
+          )}
         </NavLink>
       ))}
 
-      {/* Mini Active Card Preview (matching screen 1 card) */}
-      <Link to="/dashboard/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-        <div style={{
-          marginTop: 'auto',
-          padding: '1rem',
-          background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.4) 0%, rgba(13, 37, 82, 0.6) 100%)',
-          borderRadius: '16px',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
-          transition: 'all 0.2s ease',
-          cursor: 'pointer'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <div style={{
-              width: '26px',
-              height: '18px',
-              borderRadius: '4px',
-              background: 'linear-gradient(135deg, #ffd700, #e6b800)',
-            }} />
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>
-              {(() => {
-                try {
-                  const s = localStorage.getItem('smart_expenses_cards');
-                  if (s) {
-                    const p = JSON.parse(s);
-                    const pri = p.find(c => c.isPrimary) || p[0];
-                    return pri?.network || 'VISA';
-                  }
-                } catch {}
-                return 'VISA';
-              })()}
-            </span>
-          </div>
-          <div style={{ fontSize: '0.82rem', fontFamily: 'monospace', letterSpacing: '0.12em', color: '#e2e8f0', marginBottom: '0.35rem' }}>
-            •••• {(() => {
-              try {
-                const s = localStorage.getItem('smart_expenses_cards');
-                if (s) {
-                  const p = JSON.parse(s);
-                  const pri = p.find(c => c.isPrimary) || p[0];
-                  return pri?.last4 || '9286';
-                }
-              } catch {}
-              return '9286';
-            })()}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#93c5fd' }}>
-            <span>MANAGE</span>
-            <span style={{ color: '#38bdf8', fontWeight: 700 }}>+ ADD</span>
-          </div>
-        </div>
-      </Link>
+      {/* Quick Launch Card */}
+      <div style={{
+        marginTop: 'auto',
+        padding: '1rem',
+        borderRadius: '16px',
+        background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(13, 37, 82, 0.3) 100%)',
+        border: '1px solid rgba(56, 189, 248, 0.3)',
+        color: '#fff',
+        textAlign: 'center'
+      }}>
+        <div style={{ fontSize: '0.82rem', fontWeight: 700, marginBottom: '0.25rem' }}>Titanium Card</div>
+        <div style={{ fontSize: '0.74rem', color: '#93c5fd', marginBottom: '0.75rem' }}>Automated Expense ML Active</div>
+        <Link
+          to="/dashboard/add-expense"
+          className="btn btn-primary"
+          style={{ width: '100%', fontSize: '0.78rem', padding: '0.45rem' }}
+        >
+          + Quick Entry
+        </Link>
+      </div>
     </aside>
   );
 }

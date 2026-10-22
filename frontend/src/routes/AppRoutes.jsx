@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// Root Pages
-import Home from '../pages/Home';
+// Root Entry Pages
+import Opening from '../pages/Opening';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NotFound from '../pages/NotFound';
 
-// Dashboard Pages
+// Dashboard Pages (Intact & Preserved)
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Overview from '../pages/Dashboard/Overview';
 import AddExpense from '../pages/Dashboard/AddExpense';
@@ -16,6 +16,7 @@ import Analysis from '../pages/Dashboard/Analysis';
 import Prediction from '../pages/Dashboard/Prediction';
 import Budget from '../pages/Dashboard/Budget';
 import Reports from '../pages/Dashboard/Reports';
+import Investments from '../pages/Dashboard/Investments';
 import Profile from '../pages/Dashboard/Profile';
 
 // Chat AI Assistant
@@ -24,8 +25,9 @@ import ChatView from '../pages/Chat/ChatView';
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Public Pages */}
-      <Route path="/" element={<Home />} />
+      {/* Entry Flow: Opening -> Login -> Dashboard */}
+      <Route path="/" element={<Opening />} />
+      <Route path="/opening" element={<Opening />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/chat" element={<ChatView />} />
@@ -42,6 +44,7 @@ export default function AppRoutes() {
         <Route path="prediction" element={<Prediction />} />
         <Route path="budget" element={<Budget />} />
         <Route path="reports" element={<Reports />} />
+        <Route path="investments" element={<Investments />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 
@@ -52,6 +55,7 @@ export default function AppRoutes() {
       <Route path="/prediction" element={<Navigate to="/dashboard/prediction" replace />} />
       <Route path="/budget" element={<Navigate to="/dashboard/budget" replace />} />
       <Route path="/reports" element={<Navigate to="/dashboard/reports" replace />} />
+      <Route path="/investments" element={<Navigate to="/dashboard/investments" replace />} />
 
       {/* Catch-all 404 */}
       <Route path="*" element={<NotFound />} />

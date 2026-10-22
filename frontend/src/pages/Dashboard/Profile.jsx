@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Interactive3DCard from '../../components/Interactive3DCard';
 
 const DEFAULT_CARDS = [
   {
@@ -7,6 +8,7 @@ const DEFAULT_CARDS = [
     cardNumber: '4532 8921 7382 9286',
     last4: '9286',
     expiry: '08/32',
+    cvv: '842',
     network: 'VISA',
     theme: 'sapphire',
     isPrimary: true,
@@ -19,8 +21,9 @@ const DEFAULT_CARDS = [
     cardNumber: '5412 7534 8920 4028',
     last4: '4028',
     expiry: '11/29',
+    cvv: '428',
     network: 'Mastercard',
-    theme: 'black',
+    theme: 'violet',
     isPrimary: false,
     isFrozen: false,
     cardType: 'Titanium Platinum Credit'
@@ -60,6 +63,7 @@ export default function Profile() {
   // Save cards to localStorage whenever updated
   useEffect(() => {
     localStorage.setItem('smart_expenses_cards', JSON.stringify(cards));
+    window.dispatchEvent(new Event('smart_expenses_cards_updated'));
   }, [cards]);
 
   const showNotification = (msg) => {
@@ -231,19 +235,7 @@ export default function Profile() {
       )}
 
       {/* Royal Sapphire Profile Card */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(22, 61, 125, 0.6) 0%, rgba(9, 26, 56, 0.8) 100%)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-        borderRadius: '28px',
-        padding: '2rem 2.25rem',
-        marginBottom: '2.5rem',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.75rem',
-        flexWrap: 'wrap'
-      }}>
+      <div className="profile-hero-card">
         <div style={{
           width: '76px',
           height: '76px',
@@ -374,11 +366,7 @@ export default function Profile() {
         </div>
 
         {/* Card Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '1.75rem'
-        }}>
+        <div className="profile-cards-grid">
           {cards.map((card) => {
             const isCardFrozen = card.isFrozen;
             return (
@@ -392,85 +380,9 @@ export default function Profile() {
                   transition: 'all 0.3s ease'
                 }}
               >
-                {/* Physical Card Visual */}
-                <div
-                  className={`smart-payment-card ${getThemeClass(card.theme)}`}
-                  style={{
-                    margin: '0',
-                    maxWidth: '100%',
-                    filter: isCardFrozen ? 'grayscale(0.6) contrast(0.9)' : 'none',
-                    boxShadow: card.isPrimary
-                      ? '0 20px 45px -5px rgba(37, 99, 235, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4)'
-                      : '0 15px 35px -5px rgba(0, 0, 0, 0.6)'
-                  }}
-                >
-                  {/* Top Bar: Chip & Network */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <div className="card-chip" />
-                      {/* Contactless waves symbol */}
-                      <span style={{ fontSize: '1.1rem', opacity: 0.8, letterSpacing: '-0.1em' }}>)))</span>
-                    </div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {card.isPrimary && (
-                        <span style={{
-                          padding: '0.2rem 0.65rem',
-                          borderRadius: '9999px',
-                          background: 'rgba(255, 255, 255, 0.25)',
-                          backdropFilter: 'blur(8px)',
-                          fontSize: '0.65rem',
-                          fontWeight: 800,
-                          letterSpacing: '0.05em',
-                          textTransform: 'uppercase'
-                        }}>
-                          ⭐ Primary
-                        </span>
-                      )}
-                      {isCardFrozen && (
-                        <span style={{
-                          padding: '0.2rem 0.65rem',
-                          borderRadius: '9999px',
-                          background: 'rgba(56, 189, 248, 0.3)',
-                          border: '1px solid rgba(56, 189, 248, 0.5)',
-                          fontSize: '0.65rem',
-                          fontWeight: 800,
-                          color: '#bae6fd'
-                        }}>
-                          ❄️ Frozen
-                        </span>
-                      )}
-                      <span style={{ fontWeight: 800, fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-                        {card.network}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card Number */}
-                  <div className="card-number-dots" style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}>
-                    •••• •••• •••• {card.last4}
-                  </div>
-
-                  {/* Card Footer: Name & Expiry */}
-                  <div className="card-footer-info" style={{ marginTop: '0.5rem' }}>
-                    <div>
-                      <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.7, letterSpacing: '0.05em' }}>
-                        Cardholder
-                      </div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                        {card.nameOnCard}
-                      </div>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.7, letterSpacing: '0.05em' }}>
-                        Expires
-                      </div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, fontFamily: 'monospace' }}>
-                        {card.expiry}
-                      </div>
-                    </div>
-                  </div>
+                {/* Unified Interactive 3D Card Visual */}
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '380px', margin: '0 auto', minWidth: 0, boxSizing: 'border-box' }}>
+                  <Interactive3DCard card={card} />
                 </div>
 
                 {/* Card Controls Bar */}
@@ -598,70 +510,20 @@ export default function Profile() {
 
             <div style={{ padding: '1.5rem 1.75rem 2rem' }}>
               {/* LIVE CARD PREVIEW (Syncs dynamically with inputs) */}
-              <div style={{ marginBottom: '1.75rem' }}>
-                <div className={`live-card-preview ${getThemeClass(formData.theme)}`}>
-                  <div className="live-card-shimmer" />
-
-                  {/* Top: Chip & Network */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative', zIndex: 2 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <div className="card-chip" />
-                      <span style={{ fontSize: '1.1rem', opacity: 0.85, letterSpacing: '-0.1em' }}>)))</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {formData.isPrimary && (
-                        <span style={{
-                          padding: '0.2rem 0.6rem',
-                          borderRadius: '9999px',
-                          background: 'rgba(255, 255, 255, 0.25)',
-                          fontSize: '0.62rem',
-                          fontWeight: 800,
-                          letterSpacing: '0.05em'
-                        }}>
-                          PRIMARY
-                        </span>
-                      )}
-                      <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '0.05em' }}>
-                        {formData.network}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Middle: Live Card Number */}
-                  <div style={{
-                    fontFamily: 'Courier New, monospace',
-                    fontSize: '1.25rem',
-                    letterSpacing: '0.16em',
-                    fontWeight: 700,
-                    textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                    position: 'relative',
-                    zIndex: 2,
-                    margin: '0.75rem 0'
-                  }}>
-                    {formData.cardNumber || '•••• •••• •••• ••••'}
-                  </div>
-
-                  {/* Bottom: Name & Expiry */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 2 }}>
-                    <div>
-                      <div style={{ fontSize: '0.62rem', textTransform: 'uppercase', opacity: 0.7, letterSpacing: '0.05em' }}>
-                        Cardholder Name
-                      </div>
-                      <div style={{ fontSize: '0.92rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                        {formData.nameOnCard || 'YOUR NAME'}
-                      </div>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '0.62rem', textTransform: 'uppercase', opacity: 0.7, letterSpacing: '0.05em' }}>
-                        Valid Thru
-                      </div>
-                      <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'monospace' }}>
-                        {formData.expiry || 'MM/YY'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div style={{ marginBottom: '1.75rem', display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '380px', margin: '0 auto', minWidth: 0, boxSizing: 'border-box' }}>
+                <Interactive3DCard
+                  card={{
+                    nameOnCard: formData.nameOnCard || 'Cardholder',
+                    cardNumber: formData.cardNumber || '4532 8921 7382 9286',
+                    last4: formData.cardNumber ? formData.cardNumber.replace(/\s/g, '').slice(-4) : '9286',
+                    expiry: formData.expiry || '08/32',
+                    cvv: formData.cvv || '842',
+                    network: formData.network || 'VISA',
+                    theme: formData.theme || 'sapphire',
+                    isPrimary: formData.isPrimary,
+                    isFrozen: false
+                  }}
+                />
               </div>
 
               {/* CARD FORM */}
@@ -821,6 +683,50 @@ export default function Profile() {
           </div>
         </div>
       )}
+
+      <style>{`
+        .profile-hero-card {
+          background: linear-gradient(135deg, rgba(22, 61, 125, 0.6) 0%, rgba(9, 26, 56, 0.8) 100%);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 28px;
+          padding: 2rem 2.25rem;
+          margin-bottom: 2.5rem;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          gap: 1.75rem;
+          flex-wrap: wrap;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .profile-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1.75rem;
+          width: 100%;
+        }
+
+        @media (max-width: 768px) {
+          .profile-hero-card {
+            padding: 1.4rem 1.15rem;
+            border-radius: 20px;
+            gap: 1.25rem;
+          }
+          .profile-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .profile-hero-card {
+            padding: 1.15rem 0.9rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }
+

@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Premium3DTiltCard from '../components/Premium3DTiltCard';
 
 export default function Home() {
   return (
     <div style={{ padding: '3.5rem 0 5rem' }}>
       <div className="container">
-        {/* Main Hero Header - matching the center screen: "Modern Tools for Modern Finance" */}
+        {/* Main Hero Header */}
         <div style={{
           textAlign: 'center',
           maxWidth: '850px',
-          margin: '0 auto 3rem',
+          margin: '0 auto 3.5rem',
         }}>
           <h1 style={{
             fontSize: '3.8rem',
@@ -71,7 +72,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Triple Phone Interface Showcase (Recreating the 3 Screens from Reference Image) */}
+        {/* Triple Phone Interface Showcase */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -130,8 +131,13 @@ export default function Home() {
                 <span>2.45% this month</span>
               </div>
 
-              {/* Stacked Payment Card Preview */}
-              <div className="smart-payment-card" style={{ height: '140px', padding: '1rem' }}>
+              {/* Stacked Payment Card Preview (Blue VISA with Subtle 3D Tilt) */}
+              <Premium3DTiltCard
+                className="smart-payment-card"
+                style={{ height: '140px', padding: '1rem' }}
+                isDark={false}
+                maxTilt={4.5}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div className="card-chip" style={{ width: '28px', height: '20px' }} />
                   <span style={{ fontWeight: 800, fontSize: '0.8rem' }}>VISA</span>
@@ -139,7 +145,7 @@ export default function Home() {
                 <div style={{ fontFamily: 'monospace', letterSpacing: '0.15em', fontSize: '0.95rem' }}>
                   •••• 9286 &nbsp; 08/32
                 </div>
-              </div>
+              </Premium3DTiltCard>
             </div>
 
             {/* Lower White Sheet */}
@@ -235,8 +241,12 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Luxury Matte Black Card */}
-            <div className="luxury-black-card">
+            {/* Luxury Matte Black Card with Subtle 3D Tilt */}
+            <Premium3DTiltCard
+              className="luxury-black-card"
+              isDark={true}
+              maxTilt={4.5}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div className="card-chip" />
                 <span style={{ fontSize: '0.85rem', fontWeight: 800, letterSpacing: '0.1em' }}>PLATINUM</span>
@@ -246,10 +256,9 @@ export default function Home() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>SMART EXPENSES</span>
-                {/* Minimal metallic geometric badge */}
                 <div style={{ width: '28px', height: '28px', border: '2px solid rgba(255,255,255,0.4)', transform: 'rotate(45deg)' }} />
               </div>
-            </div>
+            </Premium3DTiltCard>
 
             {/* Bottom Pill */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center' }}>

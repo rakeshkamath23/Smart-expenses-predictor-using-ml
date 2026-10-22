@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getStoredTransactions } from '../../utils/transactionStore';
 
 export default function ExpenseHistory() {
   const [filterCategory, setFilterCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [expenses, setExpenses] = useState(() => getStoredTransactions());
 
-  const mockExpenses = [
-    { id: 101, date: 'Today, 09:42', category: 'Software & Design', merchant: 'Adobe Creative Cloud', amount: -1450.00, method: 'VISA •••• 9286', icon: '🎨' },
-    { id: 102, date: 'Today, 08:10', category: 'Merchant Income', merchant: 'Stripe Payout', amount: 18500.00, method: 'Bank Transfer', icon: 'S', isIncome: true },
-    { id: 103, date: 'Jan 28, 10:22', category: 'Workplace & Stationery', merchant: 'Office Supplies Inc', amount: -750.00, method: 'Mastercard •••• 4028', icon: '📎' },
-    { id: 104, date: 'Jan 27, 18:30', category: 'Groceries', merchant: 'Nature Basket Supermarket', amount: -3420.00, method: 'VISA •••• 9286', icon: '🛒' },
-    { id: 105, date: 'Jan 26, 21:15', category: 'Travel', merchant: 'Uber City Transit', amount: -340.00, method: 'UPI', icon: '🚗' },
-    { id: 106, date: 'Jan 24, 13:40', category: 'Cafes and Restaurants', merchant: 'Blue Tokai Coffee', amount: -480.00, method: 'VISA •••• 9286', icon: '☕' },
-    { id: 107, date: 'Jan 22, 16:00', category: 'Clothes and Shoes', merchant: 'Nike Flagship Store', amount: -4200.00, method: 'Mastercard •••• 4028', icon: '👕' },
-    { id: 108, date: 'Jan 20, 11:20', category: 'Sport', merchant: 'Cult.fit Gym Pass', amount: -2500.00, method: 'VISA •••• 9286', icon: '🏋️' },
-  ];
+  useEffect(() => {
+    const handleUpdate = () => {
+      setExpenses(getStoredTransactions());
+    };
+    window.addEventListener('smart_expenses_transactions_updated', handleUpdate);
+    return () => window.removeEventListener('smart_expenses_transactions_updated', handleUpdate);
+  }, []);
 
-  const filteredExpenses = mockExpenses.filter((item) => {
-    const matchCat = filterCategory === 'All' || item.category === filterCategory;
-    const matchSearch = item.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        item.category.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredExpenses = expenses.filter((item) => {
+    const matchCat = filterCategory === 'All' || item.category === filterCategory || item.category.toLowerCase().includes(filterCategory.toLowerCase());
+    const matchSearch = (item.merchant || item.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (item.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (item.notes || '').toLowerCase().includes(searchTerm.toLowerCase());
     return matchCat && matchSearch;
   });
 
@@ -43,27 +43,27 @@ export default function ExpenseHistory() {
       {/* Porcelain Sheet Container */}
       <div className="sheet-porcelain" style={{ borderRadius: '28px' }}>
         {/* Search & Filter Pill Bar */}
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <div style={{ flex: '1 1 180px', minWidth: 0, position: 'relative' }}>
             <input
               type="text"
               className="form-input"
               placeholder="Search by merchant, note, or category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ paddingLeft: '2.5rem', background: '#f1f5f9', border: '1px solid #e2e8f0' }}
+              style={{ paddingLeft: '2.5rem', background: '#f1f5f9', border: '1px solid #e2e8f0', width: '100%' }}
             />
             <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>
               🔍
             </span>
           </div>
 
-          <div style={{ minWidth: '180px' }}>
+          <div style={{ flex: '1 1 140px', minWidth: 0 }}>
             <select
               className="form-select"
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              style={{ background: '#f1f5f9', border: '1px solid #e2e8f0' }}
+              style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', width: '100%' }}
             >
               <option value="All">All Categories</option>
               <option value="Groceries">Groceries</option>

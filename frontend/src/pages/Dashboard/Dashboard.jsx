@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar';
 
 export default function Dashboard() {
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
-    <div style={{
-      display: 'flex',
-      minHeight: 'calc(100vh - 70px)'
-    }}>
-      <Sidebar />
+    <div className="dashboard-viewport">
       <div style={{
-        flex: 1,
-        padding: '2.5rem',
-        overflowY: 'auto',
-        backgroundColor: 'transparent'
+        maxWidth: '1280px',
+        margin: '0 auto',
+        width: '100%',
+        minWidth: 0
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
+      <style>{`
+        .dashboard-viewport {
+          min-height: calc(100vh - 72px);
+          width: 100%;
+          padding: 2rem 1.5rem 3.5rem;
+          box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+          .dashboard-viewport {
+            padding: 1.25rem 1rem 3rem;
+          }
+        }
+        @media (max-width: 420px) {
+          .dashboard-viewport {
+            padding: 1rem 0.65rem 2.5rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }
+

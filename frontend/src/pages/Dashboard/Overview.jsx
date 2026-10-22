@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getStoredTransactions } from '../../utils/transactionStore';
+import Interactive3DCard from '../../components/Interactive3DCard';
 
 export default function Overview() {
   const [currency] = useState('₹');
+  const [transactions, setTransactions] = useState(() => getStoredTransactions());
 
-  const [primaryCard] = useState(() => {
+  useEffect(() => {
+    const handleUpdate = () => {
+      setTransactions(getStoredTransactions());
+    };
+    window.addEventListener('smart_expenses_transactions_updated', handleUpdate);
+    return () => window.removeEventListener('smart_expenses_transactions_updated', handleUpdate);
+  }, []);
+
+  const [primaryCard, setPrimaryCard] = useState(() => {
     try {
       const saved = localStorage.getItem('smart_expenses_cards');
       if (saved) {
@@ -25,41 +36,35 @@ export default function Overview() {
     };
   });
 
-  const transactions = [
-    { id: 1, name: 'Adobe Creative Cloud', category: 'Software & Design', time: 'Today, 09:42', amount: -599.00, icon: '🎨', bg: '#f1f5f9' },
-    { id: 2, name: 'Stripe Payout', category: 'Merchant Income', time: 'Today, 08:10', amount: 1875.00, icon: 'S', bg: '#eff6ff', isIncome: true },
-    { id: 3, name: 'Office Supplies', category: 'Workplace & Stationery', time: 'Jan 28, 10:22', amount: -240.00, icon: '📎', bg: '#f1f5f9' },
-    { id: 4, name: 'Whole Foods Market', category: 'Groceries & Organic', time: 'Jan 27, 18:30', amount: -1420.00, icon: '🛒', bg: '#f1f5f9' },
-    { id: 5, name: 'Uber Ride City Center', category: 'Travel & Rideshare', time: 'Jan 26, 21:15', amount: -180.00, icon: '🚗', bg: '#f1f5f9' },
-  ];
-
-  const getThemeClass = (theme) => {
-    switch (theme) {
-      case 'black': return 'card-theme-black';
-      case 'emerald': return 'card-theme-emerald';
-      case 'violet': return 'card-theme-violet';
-      case 'sunset': return 'card-theme-sunset';
-      default: return 'card-theme-sapphire';
-    }
-  };
+  useEffect(() => {
+    const handleCardSync = () => {
+      try {
+        const saved = localStorage.getItem('smart_expenses_cards');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setPrimaryCard(parsed.find((c) => c.isPrimary) || parsed[0]);
+          }
+        }
+      } catch {
+        // fallback
+      }
+    };
+    window.addEventListener('storage', handleCardSync);
+    window.addEventListener('smart_expenses_cards_updated', handleCardSync);
+    return () => {
+      window.removeEventListener('storage', handleCardSync);
+      window.removeEventListener('smart_expenses_cards_updated', handleCardSync);
+    };
+  }, []);
 
   return (
-    <div>
-      {/* Upper Royal Sapphire Section - Recreating Screen 1 Header */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(22, 61, 125, 0.6) 0%, rgba(9, 26, 56, 0.8) 100%)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-        borderRadius: '28px',
-        padding: '2rem 2.25rem',
-        marginBottom: '2rem',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
+    <div style={{ width: '100%', minWidth: 0 }}>
+      {/* Upper Royal Sapphire Section */}
+      <div className="overview-hero-card">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', width: '100%' }}>
+          <div style={{ flex: '1 1 280px', minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '0.9rem', color: '#93c5fd', fontWeight: 600 }}>Total Balance</span>
               <span style={{
                 padding: '0.2rem 0.65rem',
@@ -73,54 +78,72 @@ export default function Overview() {
               </span>
             </div>
 
-            <div style={{ fontSize: '3.2rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}>
-              ₹1,04,250<span style={{ fontSize: '2rem', opacity: 0.85 }}>.00</span>
+            <div className="overview-balance-display">
+              ₹1,04,250<span style={{ fontSize: '0.65em', opacity: 0.85 }}>.00</span>
             </div>
 
-            <div className="delta-pill-badge" style={{ marginTop: '0.6rem' }}>
-              <span>↗</span>
-              <span>2.45% this month</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.6rem' }}>
+              <div className="delta-pill-badge">
+                <span>↗</span>
+                <span>2.45% this month</span>
+              </div>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                padding: '0.3rem 0.75rem',
+                borderRadius: '9999px',
+                backgroundColor: 'rgba(52, 211, 153, 0.15)',
+                border: '1px solid rgba(52, 211, 153, 0.35)',
+                color: '#6ee7b7',
+                fontSize: '0.78rem',
+                fontWeight: 700
+              }}>
+                <span>🛡️</span>
+                <span>34.2% Monthly Savings Rate</span>
+              </div>
             </div>
 
-            <p style={{ color: '#bfdbfe', fontSize: '0.92rem', marginTop: '1.25rem', maxWidth: '480px' }}>
+            <p style={{ color: '#bfdbfe', fontSize: '0.88rem', marginTop: '1rem', maxWidth: '480px', lineHeight: 1.5 }}>
               Aggregated across active physical cards, Supabase PostgreSQL transactions, and automated ML forecasting.
             </p>
           </div>
 
-          {/* Stacked Payment Card (From Screen 1) */}
-          <div className={`smart-payment-card ${getThemeClass(primaryCard?.theme)}`} style={{ minWidth: '320px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div className="card-chip" />
-              <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.05em' }}>{primaryCard?.network || 'VISA'}</span>
-            </div>
-
-            <div>
-              <div className="card-number-dots">
-                •••• {primaryCard?.last4 || '9286'}
-              </div>
-            </div>
-
-            <div className="card-footer-info">
-              <div>
-                <div style={{ fontSize: '0.68rem', color: '#bfdbfe', textTransform: 'uppercase' }}>Cardholder</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{primaryCard?.nameOnCard || 'Rakesh Kamath'}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '0.68rem', color: '#bfdbfe', textTransform: 'uppercase' }}>Expires</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{primaryCard?.expiry || '08/32'}</div>
-              </div>
-            </div>
+          {/* Realistic 3D Interactive Payment Card */}
+          <div
+            className="overview-card-container"
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              maxWidth: '380px',
+              flex: '1 1 320px',
+              margin: '0 auto',
+              minWidth: 0,
+              boxSizing: 'border-box'
+            }}
+          >
+            <Interactive3DCard card={primaryCard} />
           </div>
         </div>
       </div>
 
-      {/* Porcelain Lower Sheet Container - Recreating Screen 1 Lower Section */}
+      {/* Porcelain Lower Sheet Container */}
       <div className="sheet-porcelain" style={{ borderRadius: '28px' }}>
-        {/* Quick Action Pills: Deposit ↗, Transfer ⇄, Withdraw ↘ */}
+        {/* Quick Action Pills */}
         <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
           <Link to="/dashboard/add-expense" className="pill-action-btn">
             <span>↗</span>
             <span>Deposit / Add</span>
+          </Link>
+          <Link to="/dashboard/analysis" className="pill-action-btn" style={{ background: '#eff6ff', color: '#2563eb', borderColor: '#bfdbfe' }}>
+            <span>🔮</span>
+            <span>Bubble Visualizer</span>
+          </Link>
+          <Link to="/dashboard/investments" className="pill-action-btn" style={{ background: '#f0fdf4', color: '#16a34a', borderColor: '#bbf7d0' }}>
+            <span>📈</span>
+            <span>Investments & SIPs</span>
           </Link>
           <Link to="/dashboard/budget" className="pill-action-btn">
             <span>⇄</span>
@@ -134,6 +157,63 @@ export default function Overview() {
             <span>🤖</span>
             <span>ML Prediction</span>
           </Link>
+        </div>
+
+        {/* 3D Bubble Analytics Feature Card */}
+        <div style={{
+          marginBottom: '2.5rem',
+          padding: '1.5rem',
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, #0d2857 0%, #153a77 60%, #0a1e42 100%)',
+          color: '#ffffff',
+          boxShadow: '0 15px 35px rgba(8, 22, 48, 0.4)',
+          border: '1px solid rgba(255, 255, 255, 0.15)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>
+                🔮 Category Bubble Analytics
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#93c5fd', margin: 0 }}>
+                Interactive 3D proportional category distribution for September 2026.
+              </p>
+            </div>
+            <Link to="/dashboard/analysis" className="btn btn-primary" style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem' }}>
+              Open Full Spheres &rarr;
+            </Link>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem' }}>
+            <div style={{ padding: '0.85rem', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.4rem' }}>🛒</div>
+              <div style={{ fontSize: '0.78rem', color: '#93c5fd', marginTop: '0.2rem' }}>Groceries</div>
+              <div style={{ fontSize: '1rem', fontWeight: 800, marginTop: '0.15rem' }}>32.8%</div>
+            </div>
+
+            <div style={{ padding: '0.85rem', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.4rem' }}>👕</div>
+              <div style={{ fontSize: '0.78rem', color: '#93c5fd', marginTop: '0.2rem' }}>Clothes</div>
+              <div style={{ fontSize: '1rem', fontWeight: 800, marginTop: '0.15rem' }}>16.1%</div>
+            </div>
+
+            <div style={{ padding: '0.85rem', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.4rem' }}>☕</div>
+              <div style={{ fontSize: '0.78rem', color: '#93c5fd', marginTop: '0.2rem' }}>Cafes</div>
+              <div style={{ fontSize: '1rem', fontWeight: 800, marginTop: '0.15rem' }}>14.8%</div>
+            </div>
+
+            <div style={{ padding: '0.85rem', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.4rem' }}>🏋️</div>
+              <div style={{ fontSize: '0.78rem', color: '#93c5fd', marginTop: '0.2rem' }}>Sport</div>
+              <div style={{ fontSize: '1rem', fontWeight: 800, marginTop: '0.15rem' }}>11.3%</div>
+            </div>
+
+            <div style={{ padding: '0.85rem', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.4rem' }}>💖</div>
+              <div style={{ fontSize: '0.78rem', color: '#93c5fd', marginTop: '0.2rem' }}>Health</div>
+              <div style={{ fontSize: '1rem', fontWeight: 800, marginTop: '0.15rem' }}>8.4%</div>
+            </div>
+          </div>
         </div>
 
         {/* Recent Transactions List */}
@@ -210,6 +290,58 @@ export default function Overview() {
           <Link to="/dashboard/profile" className="dock-item-btn" title="Settings">⚙️</Link>
         </div>
       </div>
+
+      <style>{`
+        .overview-hero-card {
+          background: linear-gradient(135deg, rgba(22, 61, 125, 0.6) 0%, rgba(9, 26, 56, 0.8) 100%);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 28px;
+          padding: 2rem 2.25rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .overview-balance-display {
+          font-size: clamp(2.1rem, 7.5vw, 3.2rem);
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          color: #fff;
+          text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+          line-height: 1.15;
+          margin-top: 0.15rem;
+        }
+
+        @media (max-width: 768px) {
+          .overview-hero-card {
+            padding: 1.4rem 1.15rem;
+            border-radius: 22px;
+            margin-bottom: 1.25rem;
+          }
+          .overview-card-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 1 1 100% !important;
+            margin-top: 0.5rem !important;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .overview-hero-card {
+            padding: 1.15rem 0.9rem;
+            border-radius: 18px;
+          }
+          .overview-card-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 0.75rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
