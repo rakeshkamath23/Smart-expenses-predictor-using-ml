@@ -46,8 +46,8 @@ const DEFAULT_HOLDINGS = [
   },
   {
     id: 'inv-4',
-    symbol: 'HDFCFD',
-    name: 'HDFC High-Yield Fixed Deposit (7.6%)',
+    symbol: 'SBIFD',
+    name: 'State Bank of India Fixed Deposit (7.6%)',
     assetClass: 'Debt & FDs',
     icon: '🛡️',
     color: '#34d399',
@@ -744,7 +744,7 @@ export default function Investments() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. HDFC Top 100 Fund, Tata Steel"
+                  placeholder="e.g. SBI Bluechip Fund, Tata Steel"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{

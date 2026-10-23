@@ -1,8 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { getBankNotificationAuditLog } from '../utils/transactionStore';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [recentAudit, setRecentAudit] = useState(() => getBankNotificationAuditLog());
+  const notifDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const updateAudit = () => {
+      setRecentAudit(getBankNotificationAuditLog());
+    };
+    window.addEventListener('smart_expenses_bank_audit_updated', updateAudit);
+    window.addEventListener('smart_expenses_transactions_updated', updateAudit);
+
+    const handleClickOutside = (e) => {
+      if (notifDropdownRef.current && !notifDropdownRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('smart_expenses_bank_audit_updated', updateAudit);
+      window.removeEventListener('smart_expenses_transactions_updated', updateAudit);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const navLinks = [
     { to: '/dashboard', label: 'Wallet & Overview' },
@@ -115,24 +140,156 @@ export default function Navbar() {
           ))}
 
           {/* User Avatar & Notifications */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginLeft: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginLeft: '0.5rem', position: 'relative' }} ref={notifDropdownRef}>
             <button
+              onClick={() => setShowNotifications(!showNotifications)}
               style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                background: showNotifications ? 'rgba(56, 189, 248, 0.25)' : 'rgba(255, 255, 255, 0.08)',
+                border: `1px solid ${showNotifications ? 'rgba(56, 189, 248, 0.5)' : 'rgba(255, 255, 255, 0.15)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#e2e8f0',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                position: 'relative'
               }}
-              title="Notifications"
+              title="Bank Alerts & Notifications"
             >
-              🔔
+              <span>🔔</span>
+              {recentAudit.length > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-3px',
+                  right: '-3px',
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  color: '#ffffff',
+                  fontSize: '0.65rem',
+                  fontWeight: 800,
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
+                  border: '1.5px solid #081630'
+                }}>
+                  {recentAudit.length > 9 ? '9+' : recentAudit.length}
+                </span>
+              )}
             </button>
+
+            {/* Notification Dropdown Popover */}
+            {showNotifications && (
+              <div style={{
+                position: 'absolute',
+                top: '46px',
+                right: '0',
+                width: '340px',
+                background: 'rgba(9, 23, 50, 0.98)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: '16px',
+                border: '1px solid rgba(56, 189, 248, 0.35)',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.2)',
+                padding: '1rem',
+                zIndex: 100,
+                color: '#ffffff'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', paddingBottom: '0.6rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ fontSize: '1rem' }}>⚡</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#f8fafc' }}>Bank SMS Alerts</span>
+                  </div>
+                  <span style={{
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    color: '#6ee7b7',
+                    border: '1px solid rgba(16, 185, 129, 0.35)'
+                  }}>
+                    🟢 Live Listener
+                  </span>
+                </div>
+
+                <div style={{ maxHeight: '240px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {recentAudit.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '1.5rem 0.5rem', color: '#94a3b8', fontSize: '0.82rem' }}>
+                      <div style={{ fontSize: '1.5rem', marginBottom: '0.3rem' }}>📬</div>
+                      No bank alerts captured yet.
+                      <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '0.2rem' }}>
+                        Notifications arrive automatically via bank SMS, clipboard or webhook.
+                      </div>
+                    </div>
+                  ) : (
+                    recentAudit.slice(0, 5).map((item, idx) => (
+                      <div key={idx} style={{
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        padding: '0.6rem 0.75rem',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
+                          <span style={{ fontSize: '1rem' }}>{item.bankIcon || '🏛️'}</span>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+                              {item.merchant}
+                            </div>
+                            <div style={{ fontSize: '0.68rem', color: '#94a3b8' }}>
+                              {item.bankName} • {item.category}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{
+                          fontSize: '0.9rem',
+                          fontWeight: 800,
+                          color: item.isIncome ? '#34d399' : '#f43f5e',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {item.isIncome ? '+' : '-'}₹{item.amount?.toLocaleString('en-IN')}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div style={{ marginTop: '0.8rem', paddingTop: '0.6rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Link
+                    to="/dashboard/add-expense"
+                    onClick={() => setShowNotifications(false)}
+                    style={{
+                      fontSize: '0.78rem',
+                      color: '#38bdf8',
+                      textDecoration: 'none',
+                      fontWeight: 700
+                    }}
+                  >
+                    Manage Auto-Listener &rarr;
+                  </Link>
+
+                  <Link
+                    to="/dashboard/history"
+                    onClick={() => setShowNotifications(false)}
+                    style={{
+                      fontSize: '0.74rem',
+                      color: '#94a3b8',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    View Ledger
+                  </Link>
+                </div>
+              </div>
+            )}
 
             <Link to="/dashboard/profile" title="Profile">
               <div style={{

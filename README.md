@@ -67,11 +67,12 @@ Managing personal finances often suffers from fragmented workflows: tracking exp
 - **Security & Convenience**: Masked 16-digit card formatting, PIN/CVV reveal toggles, and live balance counters synchronized across the entire application.
 
 ### 3. Automated Real-World Transaction Collection & Shared Store
-- **Bank SMS & UPI Notification Parser (`smsParser.js`)**: Real-time parsing engine for bank SMS alerts (HDFC, SBI, ICICI, Axis, Kotak, GPay, PhonePe, Paytm). Automatically extracts debit/credit amounts, merchant/payee, date, reference/UTR IDs, payment mode, and auto-classifies categories with 98% confidence.
+- **Automated Bank SMS & Notification Engine (`smsParser.js` + `AddExpense.jsx`)**: Real-time automated listener for bank SMS and UPI notification alerts (SBI, ICICI, Axis, Kotak, GPay, PhonePe, Paytm, CRED). Automatically parses incoming bank SMS with 99% accuracy, extracts debit/credit amounts, merchant/payee, date, account numbers, and auto-classifies categories into the expense ledger without requiring manual clicks or typing.
+- **Hands-Free Auto-Stream & Webhook Integration**: Features an automated live streaming background daemon, clipboard auto-detection on window focus, native Web Audio crystal chimes, floating in-app bank push notifications, and a dedicated Android SMS Forwarder Webhook endpoint (`/api/bank-notifications/webhook/`).
 - **AI / OCR Receipt & Bill Scanner (`receiptParser.js` + `tesseract.js`)**: Neural Optical Character Recognition pipeline that scans photos of receipts and invoices. Extracts total payable amount, store name, date, and line-item breakdowns with interactive scan progress tracking.
-- **1-Click Real-World Simulation Templates**: Includes pre-packaged templates for immediate evaluation (HDFC Swiggy, SBI Cult.fit, ICICI Electricity, Axis Uber, Starbucks Slip, Supermarket Grocery Bill, Apollo Pharmacy).
+- **1-Click Real-World Simulation Templates**: Includes pre-packaged templates for immediate evaluation (SBI Swiggy, SBI Cult.fit, ICICI Electricity, Axis Uber, Starbucks Slip, Supermarket Grocery Bill, Apollo Pharmacy).
 - **Dynamic Payment Attribution**: Automatically populates payment methods from the user's active smart cards saved in their Profile.
-- **Cross-Component Reactivity**: Backed by a synchronized `transactionStore` with real-time `Event` dispatches (`smart_expenses_transactions_updated`) so overview cards, history ledgers, category bubbles, and budget gauges update simultaneously without page reloads.
+- **Cross-Component Reactivity**: Backed by a synchronized `transactionStore` with real-time `Event` dispatches (`smart_expenses_transactions_updated` and `smart_expenses_bank_notification_received`) so overview cards, history ledgers, category bubbles, and budget gauges update simultaneously without page reloads.
 
 ### 4. Searchable Ledger & Expense History
 - **Multi-Parameter Search**: Instant live filtering by merchant name, transaction notes, or category keyword.

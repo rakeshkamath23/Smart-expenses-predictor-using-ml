@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BankNotificationBanner from './components/BankNotificationBanner';
 import AppRoutes from './routes/AppRoutes';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
 
   return (
     <div className="app-container">
+      <BankNotificationBanner />
       {!isAuth && <Navbar />}
       <main className={isAuth ? 'auth-viewport-content' : 'main-content'}>
         <AppRoutes />
